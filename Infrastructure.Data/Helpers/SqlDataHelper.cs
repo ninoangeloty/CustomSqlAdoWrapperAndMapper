@@ -42,6 +42,21 @@ namespace Infrastructure.Data.Helpers
             }
         }
 
+        public static void Execute(string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, bool isStoredProcedure = false)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                {
+                    conn.Open();
+
+                    SetupCommand(cmd, parameters, isStoredProcedure);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         private static void SetupCommand(SqlCommand cmd, SqlDataQueryParameter[] parameters, bool isStoredProcedure)
         {
             if (isStoredProcedure)

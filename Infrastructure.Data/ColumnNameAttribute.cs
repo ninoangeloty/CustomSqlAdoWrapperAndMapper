@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class ColumnNameAttribute : Attribute
     {
         public ColumnNameAttribute(string column)

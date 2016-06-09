@@ -30,15 +30,20 @@ namespace Infrastructure.Data
             return this;
         }
 
-        public IEnumerable<TModel> As<TModel>()
+        public IEnumerable<TModel> Fetch<TModel>()
             where TModel : class, new()
         {
             return SqlDataHelper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.IsStoredProcedure);
         }
 
-        public DataTable ToDataTable()
+        public DataTable FetchAsDataTable()
         {
             return SqlDataHelper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.IsStoredProcedure);
+        }
+
+        public void Execute()
+        {
+            SqlDataHelper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.IsStoredProcedure);
         }
 
         private bool IsStoredProcedure { get; set; }

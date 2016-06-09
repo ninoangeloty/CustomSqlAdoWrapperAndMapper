@@ -7,7 +7,7 @@ using System.Configuration;
 
 namespace Infrastructure.Data
 {
-    public class SqlDataManager
+    public class SqlDataManager : IDisposable
     {
         public SqlDataManager(string key)
         {
@@ -17,6 +17,11 @@ namespace Infrastructure.Data
         public SqlDataQuery CommandText(string commandText)
         {
             return new SqlDataQuery(commandText, this.ConnectionString);
+        }
+
+        public void Dispose()
+        {
+            this.ConnectionString = string.Empty;
         }
 
         public string ConnectionString { get; private set; }

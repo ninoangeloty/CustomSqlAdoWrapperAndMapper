@@ -35,14 +35,14 @@ namespace TestClient
                 .CommandText("spGetPersonsList")
                 .AddParameter("@DepartmentID", 1)
                 .StoredProcedure()
-                .As<Person>();
+                .Fetch<Person>();
 
             // Map to Model
             Person person = manager
                 .CommandText("spGetPersonsList")
                 .AddParameter("@DepartmentID", 1)
                 .StoredProcedure()
-                .As<Person>()
+                .Fetch<Person>()
                 .Single();
 
             // To Data Table
@@ -50,7 +50,7 @@ namespace TestClient
                 .CommandText("spGetPersonsList")
                 .AddParameter("@DepartmentID", 1)
                 .StoredProcedure()
-                .ToDataTable();
+                .FetchAsDataTable();
 
             // DataTable to Model
             var collection = dataTable.As<Person>();
@@ -61,7 +61,19 @@ namespace TestClient
 
             IEnumerable<Person> personsTwo = manager
                 .CommandText("SELECT * FROM Persons")
-                .As<Person>();
+                .Fetch<Person>();
+
+
+            // Execute Non-Query
+            //------------------
+
+            manager
+                .CommandText("spInsertPerson")
+                .StoredProcedure()
+                .AddParameter("@FirstName", "John")
+                .AddParameter("@LastName", "Doe")
+                .AddParameter("@Address", "Washington")
+                .Execute();
         }
     }
 
