@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7CC63D35-FF92-411A-B59D-7A7DF413D553}</ProjectGuid>
+    <ProjectGuid>{03089668-FE89-499D-B615-20C67A3E2D60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure.Data</RootNamespace>
-    <AssemblyName>Infrastructure.Data</AssemblyName>
+    <RootNamespace>Infrastructure.Logging</RootNamespace>
+    <AssemblyName>Infrastructure.Logging</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,17 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnNameAttribute.cs" />
-    <Compile Include="Extensions\DataTableExtensions.cs" />
-    <Compile Include="Extensions\SqlDataReaderExtensions.cs" />
-    <Compile Include="Helpers\SqlDataHelper.cs" />
-    <Compile Include="Mapper\SqlDataMapper.cs" />
-    <Compile Include="Mapper\SqlDataMapperHelper.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlDataManager.cs" />
-    <Compile Include="SqlDataQuery.cs" />
-    <Compile Include="SqlDataQueryParameter.cs" />
-    <Compile Include="SqlDataQueryResult.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

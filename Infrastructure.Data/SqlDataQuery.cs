@@ -23,9 +23,16 @@ namespace Infrastructure.Data
             return this;
         }
 
-        public SqlDataQuery StoredProcedure()
+        public SqlDataQuery AddOutputParameter(string name, SqlDbType sqlDbType)
         {
-            this.IsStoredProcedure = true;
+            this.Parameters.Add(new SqlDataQueryParameter(name, sqlDbType));
+
+            return this;
+        }
+
+        public SqlDataQuery IsStoredProcedure()
+        {
+            _isStoredProcedure = true;
 
             return this;
         }
@@ -33,25 +40,25 @@ namespace Infrastructure.Data
         public IEnumerable<TModel> Fetch<TModel>()
             where TModel : class, new()
         {
-            return SqlDataHelper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.IsStoredProcedure);
+            return SqlDataHelper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), _isStoredProcedure);
         }
 
         public DataTable FetchAsDataTable()
         {
-            return SqlDataHelper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.IsStoredProcedure);
+            return SqlDataHelper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), _isStoredProcedure);
         }
 
         public void Execute()
         {
-            SqlDataHelper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.IsStoredProcedure);
+            SqlDataHelper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), _isStoredProcedure);
         }
 
-        private bool IsStoredProcedure { get; set; }
         public string CommandText { get; private set; }
         public string ConnectionString { get; private set; }
-
+        
+        private bool _isStoredProcedure { get; set; }
         private List<SqlDataQueryParameter> _parameters;
-        private List<SqlDataQueryParameter> Parameters
+        public List<SqlDataQueryParameter> Parameters
         {
             get
             {

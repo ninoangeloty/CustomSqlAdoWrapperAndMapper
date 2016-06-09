@@ -42,7 +42,7 @@ namespace Infrastructure.Data.Helpers
             }
         }
 
-        public static void Execute(string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, bool isStoredProcedure = false)
+        public static SqlDataQueryResult Execute(string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, bool isStoredProcedure = false)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -53,7 +53,19 @@ namespace Infrastructure.Data.Helpers
                     SetupCommand(cmd, parameters, isStoredProcedure);
 
                     cmd.ExecuteNonQuery();
+                                        
+                    return new SqlDataQueryResult() { 
+                        OutputParameters = GetOutputParameters(cmd, parameters)
+                    };
                 }
+            }
+        }
+
+        private static IEnumerable<SqlDataQueryParameter> GetOutputParameters(SqlCommand command, SqlDataQueryParameter[] parameters)
+        {
+            foreach (var parameter in parameters.Where(_ => _.IsOutput))
+            {
+                yield return new SqlDataQueryParameter(parameter.Name, command.Parameters[parameter.Name].Value);
             }
         }
 
@@ -66,7 +78,15 @@ namespace Infrastructure.Data.Helpers
 
             foreach (var param in parameters)
             {
-                cmd.Parameters.AddWithValue(param.Name, param.Value);
+                if (param.IsOutput)
+                {
+                    cmd.Parameters.Add(param.Name, param.SqlDbType);
+                    cmd.Parameters[param.Name].Direction = ParameterDirection.Output;
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue(param.Name, param.Value);
+                }
             }
         }
     }
