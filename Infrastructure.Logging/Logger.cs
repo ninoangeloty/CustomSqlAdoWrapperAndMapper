@@ -22,11 +22,12 @@ namespace Infrastructure.Logging
         }
 
         public void Error(string message,
+            Exception exception,
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            this.Log(message, LogMessageType.Error, memberName, sourceFilePath, sourceLineNumber);
+            this.Log(message, LogMessageType.Error, memberName, sourceFilePath, sourceLineNumber, exception);
         }
 
         public void Warning(string message,
@@ -49,7 +50,8 @@ namespace Infrastructure.Logging
             LogMessageType logMessageType,
             [CallerMemberName] string memberName = "", 
             [CallerFilePath] string sourceFilePath = "", 
-            [CallerLineNumber] int sourceLineNumber = 0)
+            [CallerLineNumber] int sourceLineNumber = 0,
+            Exception exception = null)
         {
         }
     }
