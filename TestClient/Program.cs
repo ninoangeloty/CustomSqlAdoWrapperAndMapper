@@ -32,14 +32,14 @@ namespace TestClient
 
             // Map to collection of Model
             IEnumerable<Person> persons = manager
-                .CommandText("spGetPersonsList")
+                .CreateCommand("spGetPersonsList")
                 .AddParameter("@DepartmentID", 1)
                 .IsStoredProcedure()
                 .Fetch<Person>();
 
             // Map to Model
             Person person = manager
-                .CommandText("spGetPersonsList")
+                .CreateCommand("spGetPersonsList")
                 .AddParameter("@DepartmentID", 1)
                 .IsStoredProcedure()
                 .Fetch<Person>()
@@ -47,7 +47,7 @@ namespace TestClient
 
             // To Data Table
             DataTable dataTable = manager
-                .CommandText("spGetPersonsList")
+                .CreateCommand("spGetPersonsList")
                 .AddParameter("@DepartmentID", 1)
                 .IsStoredProcedure()
                 .FetchAsDataTable();
@@ -60,21 +60,34 @@ namespace TestClient
             // -------------------------
 
             IEnumerable<Person> personsTwo = manager
-                .CommandText("SELECT * FROM Persons")
+                .CreateCommand("SELECT * FROM Persons")
                 .Fetch<Person>();
 
 
             // Execute Non-Query
             //------------------
 
-            manager
-                .CommandText("spInsertPerson")
+            var result = manager
+                .CreateCommand("spInsertPerson")
                 .IsStoredProcedure()
                 .AddParameter("@FirstName", "John")
                 .AddParameter("@LastName", "Doe")
                 .AddParameter("@Address", "Washington")
                 .AddOutputParameter("@Status", SqlDbType.Int)
                 .Execute();
+
+
+            // Non-fluent implementation
+            // -------------------------
+
+            var command = manager.CreateCommand("spInsertPerson");
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.Add(new SqlDataQueryParameter("@FirstName", "John"));
+            command.Parameters.Add(new SqlDataQueryParameter("@LastName", "Doe"));
+            command.Parameters.Add(new SqlDataQueryParameter("@Address", "Washington"));
+            command.Parameters.Add(new SqlDataQueryParameter("@Status", true, SqlDbType.Int));
+
+            var resultTwo = command.Execute();
         }
     }
 

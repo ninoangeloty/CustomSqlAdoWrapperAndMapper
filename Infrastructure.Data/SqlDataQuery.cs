@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace Infrastructure.Data
 
         public SqlDataQuery IsStoredProcedure()
         {
-            _isStoredProcedure = true;
+            this.CommandType = System.Data.CommandType.StoredProcedure;
 
             return this;
         }
@@ -40,23 +41,23 @@ namespace Infrastructure.Data
         public IEnumerable<TModel> Fetch<TModel>()
             where TModel : class, new()
         {
-            return SqlDataHelper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), _isStoredProcedure);
+            return SqlDataHelper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
         }
 
         public DataTable FetchAsDataTable()
         {
-            return SqlDataHelper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), _isStoredProcedure);
+            return SqlDataHelper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
         }
 
-        public void Execute()
+        public SqlDataQueryResult Execute()
         {
-            SqlDataHelper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), _isStoredProcedure);
+            return SqlDataHelper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
         }
 
-        public string CommandText { get; private set; }
+        public string CommandText { get; set; }
         public string ConnectionString { get; private set; }
+        public CommandType CommandType { get; set; }
         
-        private bool _isStoredProcedure { get; set; }
         private List<SqlDataQueryParameter> _parameters;
         public List<SqlDataQueryParameter> Parameters
         {

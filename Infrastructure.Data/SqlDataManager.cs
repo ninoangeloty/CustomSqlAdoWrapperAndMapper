@@ -14,7 +14,7 @@ namespace Infrastructure.Data
             this.ConnectionString = ConfigurationManager.ConnectionStrings[key].ConnectionString;
         }
 
-        public SqlDataQuery CommandText(string commandText)
+        public SqlDataQuery CreateCommand(string commandText)
         {
             return new SqlDataQuery(commandText, this.ConnectionString);
         }

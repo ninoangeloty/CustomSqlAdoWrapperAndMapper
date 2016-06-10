@@ -11,7 +11,8 @@ namespace Infrastructure.Data.Helpers
 {
     internal static class SqlDataHelper
     {
-        public static IEnumerable<TModel> ToModel<TModel>(string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, bool isStoredProcedure = false)
+        public static IEnumerable<TModel> ToModel<TModel>(
+            string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, CommandType? commandType = null)
             where TModel : class, new()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -20,14 +21,15 @@ namespace Infrastructure.Data.Helpers
                 {
                     conn.Open();
 
-                    SetupCommand(cmd, parameters, isStoredProcedure);
+                    SetupCommand(cmd, parameters, commandType);
 
                     return cmd.ExecuteReader().As<TModel>();
                 }
             }
         }
 
-        public static DataTable ToDataTable(string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, bool isStoredProcedure = false)
+        public static DataTable ToDataTable(
+            string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, CommandType? commandType = null)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -35,14 +37,15 @@ namespace Infrastructure.Data.Helpers
                 {
                     conn.Open();
 
-                    SetupCommand(cmd, parameters, isStoredProcedure);
+                    SetupCommand(cmd, parameters, commandType);
 
                     return cmd.ExecuteReader().ToDataTable();
                 }
             }
         }
 
-        public static SqlDataQueryResult Execute(string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, bool isStoredProcedure = false)
+        public static SqlDataQueryResult Execute(
+            string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, CommandType? commandType = null)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -50,7 +53,7 @@ namespace Infrastructure.Data.Helpers
                 {
                     conn.Open();
 
-                    SetupCommand(cmd, parameters, isStoredProcedure);
+                    SetupCommand(cmd, parameters, commandType);
 
                     cmd.ExecuteNonQuery();
                                         
@@ -69,11 +72,11 @@ namespace Infrastructure.Data.Helpers
             }
         }
 
-        private static void SetupCommand(SqlCommand cmd, SqlDataQueryParameter[] parameters, bool isStoredProcedure)
+        private static void SetupCommand(SqlCommand cmd, SqlDataQueryParameter[] parameters, CommandType? commandType)
         {
-            if (isStoredProcedure)
+            if (commandType.HasValue)
             {
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = commandType.Value;
             }
 
             foreach (var param in parameters)

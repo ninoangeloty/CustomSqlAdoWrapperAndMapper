@@ -15,11 +15,11 @@ namespace Infrastructure.Data
             this.Value = value;
         }
 
-        public SqlDataQueryParameter(string name, SqlDbType sqlDbType)
+        public SqlDataQueryParameter(string name, bool isOutput, SqlDbType sqlDbType)
         {
             this.Name = name;
             this.SqlDbType = sqlDbType;
-            this.IsOutput = true;
+            this.IsOutput = isOutput;
         }
 
         public string Name { get; set; }
