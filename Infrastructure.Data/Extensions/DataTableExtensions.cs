@@ -12,7 +12,7 @@ namespace Infrastructure.Data.Extensions
     {
         public static IEnumerable<TModel> As<TModel>(this DataTable table) where TModel : new()
         {
-            if (table.Rows.Count == 0)
+            if (table == null || table.Rows.Count == 0)
             {
                 return new List<TModel>();
             }

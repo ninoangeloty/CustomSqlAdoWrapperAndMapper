@@ -41,17 +41,23 @@ namespace Infrastructure.Data
         public IEnumerable<TModel> Fetch<TModel>()
             where TModel : class, new()
         {
-            return SqlDataHelper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
+            var helper = new SqlDataHelper();
+
+            return helper.ToModel<TModel>(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
         }
 
         public DataTable FetchAsDataTable()
         {
-            return SqlDataHelper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
+            var helper = new SqlDataHelper();
+
+            return helper.ToDataTable(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
         }
 
         public SqlDataQueryResult Execute()
         {
-            return SqlDataHelper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
+            var helper = new SqlDataHelper();
+
+            return helper.Execute(this.CommandText, this.ConnectionString, this.Parameters.ToArray(), this.CommandType);
         }
 
         public string CommandText { get; set; }

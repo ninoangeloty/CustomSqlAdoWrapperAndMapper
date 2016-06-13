@@ -14,8 +14,7 @@ namespace Infrastructure.Data.Extensions
         public static IEnumerable<TModel> As<TModel>(this SqlDataReader reader)
             where TModel : class, new()
         {
-            var mapper = new SqlDataMapper();
-            return mapper.ToModel<TModel>(reader);
+            return SqlDataMapper.ToModel<TModel>(reader);
         }
 
         public static DataTable ToDataTable(this SqlDataReader reader)

@@ -25,8 +25,8 @@ namespace TestClient
 
         public void Execute()
         {
-            // Stored Procedure with parameter
-            // -------------------------------
+            // Fluent interface - Stored Procedure with parameter
+            // --------------------------------------------------
 
             var manager = new SqlDataManager("DefaultDatabase"); // DefaultDatabase = connection string key
 
@@ -77,8 +77,8 @@ namespace TestClient
                 .Execute();
 
 
-            // Non-fluent implementation
-            // -------------------------
+            // Non-fluent interface
+            // --------------------
 
             var command = manager.CreateCommand("spInsertPerson");
             command.CommandType = CommandType.StoredProcedure;

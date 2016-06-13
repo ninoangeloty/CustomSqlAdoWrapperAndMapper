@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Mapper
 {
-    public class SqlDataMapper
+    public static class SqlDataMapper
     {
-        public IEnumerable<TModel> ToModel<TModel>(SqlDataReader reader)
+        public static IEnumerable<TModel> ToModel<TModel>(SqlDataReader reader)
             where TModel : class, new()
         {
-            var columns = this.GetColumnNames(reader);
+            var columns = SqlDataMapper.GetColumnNames(reader);
             var collection = new List<TModel>();
             var properties = typeof(TModel).GetProperties();
 
@@ -36,7 +36,7 @@ namespace Infrastructure.Data.Mapper
             return collection;
         }
 
-        private IEnumerable<string> GetColumnNames(SqlDataReader reader)
+        private static IEnumerable<string> GetColumnNames(SqlDataReader reader)
         {
             var columns = new List<string>();
             var count = reader.VisibleFieldCount;

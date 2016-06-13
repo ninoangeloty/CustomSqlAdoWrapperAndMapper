@@ -9,9 +9,9 @@ using Infrastructure.Data.Extensions;
 
 namespace Infrastructure.Data.Helpers
 {
-    internal static class SqlDataHelper
+    public class SqlDataHelper
     {
-        public static IEnumerable<TModel> ToModel<TModel>(
+        public IEnumerable<TModel> ToModel<TModel>(
             string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, CommandType? commandType = null)
             where TModel : class, new()
         {
@@ -28,7 +28,7 @@ namespace Infrastructure.Data.Helpers
             }
         }
 
-        public static DataTable ToDataTable(
+        public DataTable ToDataTable(
             string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, CommandType? commandType = null)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -44,7 +44,7 @@ namespace Infrastructure.Data.Helpers
             }
         }
 
-        public static SqlDataQueryResult Execute(
+        public SqlDataQueryResult Execute(
             string commandText, string connectionString, SqlDataQueryParameter[] parameters = null, CommandType? commandType = null)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
